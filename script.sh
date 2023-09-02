@@ -6,5 +6,5 @@
 # Display user_output1.txt to the user as user output, and the file output1.txt as the expected output 
 # Once you have tested out the script and verified it's working, commit it to a branch: <your_name>
 
-echo "Seeing the changes"
+echo "Seeing the changes after pusing"
 echo "We need to see changes in the repo"
