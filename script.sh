@@ -10,120 +10,76 @@
 language=$1
 echo "The language passed as argument is $language"
 
-cat input1.txt | python3 $2 > user_output1.txt
-echo "User output: "
-cat user_output1.txt
-echo "Expected output: "
-cat output1.txt
+if [ $language == "python" ]
+then
+    cat input1.txt | python3 $2 > user_output1.txt
+    echo "User output: "
+    cat user_output1.txt
+    echo "Expected output: "
+    cat output1.txt
 
-# Task 2
-for var in "$@"
-do
-    if [ "$var" = "$language" ]
-    then
-        continue
-    fi
-    echo "Running $var on test cases"
-    for i in $(seq 3)
+    # Task 2
+    for var in "$@"
     do
-        echo "Running test case $i:"
-        cat input$i.txt | python3 $var > user_output$i.txt
-        echo "User output: "
-        cat user_output$i.txt
-        echo "Expected output: "
-        cat output$i.txt
-        echo "----------------------------------------------------------------------"
-    done
-    echo "=========================================================================="
-done
-
-# Task 3
-for var in "$@"
-do
-    if [ "$var" = "$language" ]
-    then
-        continue
-    fi
-    echo "Running file $var on test cases"
-    for i in $(seq 3)
-    do
-        echo "Running test case $i:"
-        cat input$i.txt | python3 $var > user_output$i.txt
-        cmp -s output$i.txt user_output$i.txt
-        b=`echo $?`
-        if [ $b -eq 1 ]
+        if [ "$var" = "$language" ]
         then
-            echo "Test case $i failed"
+            continue
+        fi
+        echo "Running $var on test cases"
+        for i in $(seq 3)
+        do
+            echo "Running test case $i:"
+            cat input$i.txt | python3 $var > user_output$i.txt
             echo "User output: "
             cat user_output$i.txt
             echo "Expected output: "
             cat output$i.txt
-        else
-            echo "Test case $i passed"
-        fi
-        echo "----------------------------------------------------------------------"
+            echo "----------------------------------------------------------------------"
+        done
+        echo "=========================================================================="
     done
-    echo "=========================================================================="
-done
 
-# Task 4
-for var in "$@"
-do
-    if [ "$var" = "$language" ]
-    then
-        continue
-    fi
-    echo "Running test cases  on file $var"
-    for i in $(seq 3)
+    # Task 3
+    for var in "$@"
     do
-        echo "Running test case $i"
-        cat input$i.txt | python3 $var > user_output$i.txt 2>error.txt
-        status=$?
-        if [ $status -ne 0 ]
+        if [ "$var" = "$language" ]
         then
-            echo "Code has run-time errors"
-            cat error.txt
-        else
-            echo "Code ran without run-time errors"
+            continue
+        fi
+        echo "Running file $var on test cases"
+        for i in $(seq 3)
+        do
+            echo "Running test case $i:"
+            cat input$i.txt | python3 $var > user_output$i.txt
             cmp -s output$i.txt user_output$i.txt
-            b=$?
+            b=`echo $?`
             if [ $b -eq 1 ]
             then
                 echo "Test case $i failed"
-                echo "User output:"
+                echo "User output: "
                 cat user_output$i.txt
-                echo "Expected output:"
+                echo "Expected output: "
                 cat output$i.txt
             else
                 echo "Test case $i passed"
             fi
-        fi
-        echo "----------------------------------------------------------------------------------"
+            echo "----------------------------------------------------------------------"
+        done
+        echo "=========================================================================="
     done
-    echo "=================================================================================="
-done
 
-
-# Task 5
-language=$1
-echo "The language passed as argument is $language"
-check="python"
-if [ "$language" = "$check" ]
-then
-    echo "Language verified"
-    for  var in "$@"
+    # Task 4
+    for var in "$@"
     do
-        if [ "$var" = "$check" ]
+        if [ "$var" = "$language" ]
         then
             continue
         fi
-        echo "Running test cases on file $var"
-        for i in $(seq 2 4)
+        echo "Running test cases  on file $var"
+        for i in $(seq 3)
         do
-            n=1
-            x=`expr $i - $n`
-            echo "Running test case $x"
-            cat input$x.txt | python3 $var > user_output$x.txt 2>error.txt
+            echo "Running test case $i"
+            cat input$i.txt | python3 $var > user_output$i.txt 2>error.txt
             status=$?
             if [ $status -ne 0 ]
             then
@@ -131,23 +87,218 @@ then
                 cat error.txt
             else
                 echo "Code ran without run-time errors"
-                cmp -s output$x.txt user_output$x.txt
+                cmp -s output$i.txt user_output$i.txt
                 b=$?
                 if [ $b -eq 1 ]
                 then
-                    echo "Test case $x failed"
+                    echo "Test case $i failed"
                     echo "User output:"
-                    cat user_output$x.txt
+                    cat user_output$i.txt
                     echo "Expected output:"
-                    cat output$x.txt
+                    cat output$i.txt
                 else
-                    echo "Test case $x passed"
+                    echo "Test case $i passed"
                 fi
             fi
             echo "----------------------------------------------------------------------------------"
         done
         echo "=================================================================================="
     done
+
+
+    # Task 5
+    language=$1
+    echo "The language passed as argument is $language"
+    check="python"
+    if [ "$language" = "$check" ]
+    then
+        echo "Language verified"
+        for  var in "$@"
+        do
+            if [ "$var" = "$check" ]
+            then
+                continue
+            fi
+            echo "Running test cases on file $var"
+            for i in $(seq 2 4)
+            do
+                n=1
+                x=`expr $i - $n`
+                echo "Running test case $x"
+                cat input$x.txt | python3 $var > user_output$x.txt 2>error.txt
+                status=$?
+                if [ $status -ne 0 ]
+                then
+                    echo "Code has run-time errors"
+                    cat error.txt
+                else
+                    echo "Code ran without run-time errors"
+                    cmp -s output$x.txt user_output$x.txt
+                    b=$?
+                    if [ $b -eq 1 ]
+                    then
+                        echo "Test case $x failed"
+                        echo "User output:"
+                        cat user_output$x.txt
+                        echo "Expected output:"
+                        cat output$x.txt
+                    else
+                        echo "Test case $x passed"
+                    fi
+                fi
+                echo "----------------------------------------------------------------------------------"
+            done
+            echo "=================================================================================="
+        done
+    else
+        echo "Invalid language"
+    fi
+
 else
-    echo "Invalid language"
+    gcc $2
+    cat input1.txt | ./a.out > user_output1.txt
+    echo "User output: "
+    cat user_output1.txt
+    echo "Expected output: "
+    cat output1.txt
+
+    # Task 2
+    for var in "$@"
+    do
+        if [ "$var" = "$language" ]
+        then
+            continue
+        fi
+        echo "Running $var on test cases"
+        for i in $(seq 3)
+        do
+            echo "Running test case $i:"
+            gcc $var
+            cat input$i.txt | ./a.out > user_output$i.txt
+            echo "User output: "
+            cat user_output$i.txt
+            echo "Expected output: "
+            cat output$i.txt
+            echo "----------------------------------------------------------------------"
+        done
+        echo "=========================================================================="
+    done
+
+    # Task 3
+    for var in "$@"
+    do
+        if [ "$var" = "$language" ]
+        then
+            continue
+        fi
+        echo "Running file $var on test cases"
+        for i in $(seq 3)
+        do
+            echo "Running test case $i:"
+            gcc $var
+            cat input$i.txt | ./a.out > user_output$i.txt
+            cmp -s output$i.txt user_output$i.txt
+            b=`echo $?`
+            if [ $b -eq 1 ]
+            then
+                echo "Test case $i failed"
+                echo "User output: "
+                cat user_output$i.txt
+                echo "Expected output: "
+                cat output$i.txt
+            else
+                echo "Test case $i passed"
+            fi
+            echo "----------------------------------------------------------------------"
+        done
+        echo "=========================================================================="
+    done
+
+    # Task 4
+    for var in "$@"
+    do
+        if [ "$var" = "$language" ]
+        then
+            continue
+        fi
+        echo "Running test cases  on file $var"
+        for i in $(seq 3)
+        do
+            echo "Running test case $i"
+            gcc $var
+            cat input$i.txt | ./a.out > user_output$i.txt 2>error.txt
+            status=$?
+            if [ $status -ne 0 ]
+            then
+                echo "Code has run-time errors"
+                cat error.txt
+            else
+                echo "Code ran without run-time errors"
+                cmp -s output$i.txt user_output$i.txt
+                b=$?
+                if [ $b -eq 1 ]
+                then
+                    echo "Test case $i failed"
+                    echo "User output:"
+                    cat user_output$i.txt
+                    echo "Expected output:"
+                    cat output$i.txt
+                else
+                    echo "Test case $i passed"
+                fi
+            fi
+            echo "----------------------------------------------------------------------------------"
+        done
+        echo "=================================================================================="
+    done
+
+
+    # Task 5
+    language=$1
+    echo "The language passed as argument is $language"
+    check="C"
+    if [ "$language" = "$check" ]
+    then
+        echo "Language verified"
+        for  var in "$@"
+        do
+            if [ "$var" = "$check" ]
+            then
+                continue
+            fi
+            echo "Running test cases on file $var"
+            for i in $(seq 2 4)
+            do
+                n=1
+                x=`expr $i - $n`
+                echo "Running test case $x"
+                gcc $var
+                cat input$x.txt | ./a.out > user_output$x.txt 2>error.txt
+                status=$?
+                if [ $status -ne 0 ]
+                then
+                    echo "Code has run-time errors"
+                    cat error.txt
+                else
+                    echo "Code ran without run-time errors"
+                    cmp -s output$x.txt user_output$x.txt
+                    b=$?
+                    if [ $b -eq 1 ]
+                    then
+                        echo "Test case $x failed"
+                        echo "User output:"
+                        cat user_output$x.txt
+                        echo "Expected output:"
+                        cat output$x.txt
+                    else
+                        echo "Test case $x passed"
+                    fi
+                fi
+                echo "----------------------------------------------------------------------------------"
+            done
+            echo "=================================================================================="
+        done
+    else
+        echo "Invalid language"
+    fi
 fi
