@@ -7,3 +7,4 @@
 # Once you have tested out the script and verified it's working, commit it to a branch: <your_name>
 
 echo "General Kenobi"
+echo "We need to see changes in the repo"
