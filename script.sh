@@ -19,6 +19,10 @@ cat output1.txt
 # Task 2
 for var in "$@"
 do
+    if [ "$var" = "$language" ]
+    then
+        continue
+    fi
     echo "Running $var on test cases"
     for i in $(seq 3)
     do
@@ -36,6 +40,10 @@ done
 # Task 3
 for var in "$@"
 do
+    if [ "$var" = "$language" ]
+    then
+        continue
+    fi
     echo "Running file $var on test cases"
     for i in $(seq 3)
     do
@@ -61,6 +69,10 @@ done
 # Task 4
 for var in "$@"
 do
+    if [ "$var" = "$language" ]
+    then
+        continue
+    fi
     echo "Running test cases  on file $var"
     for i in $(seq 3)
     do
@@ -101,7 +113,6 @@ then
     echo "Language verified"
     for  var in "$@"
     do
-        echo $var
         if [ "$var" = "$check" ]
         then
             continue
