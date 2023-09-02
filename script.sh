@@ -5,3 +5,11 @@
 # Run the python file, using input1.txt as stdin, and write the output to a file user_output1.txt 
 # Display user_output1.txt to the user as user output, and the file output1.txt as the expected output 
 # Once you have tested out the script and verified it's working, commit it to a branch: <your_name>
+
+language=$1
+echo "The language passed as argument is: $1"
+echo "User output"
+
+cat input1.txt | gcc $2 > output1.txt
+
+
