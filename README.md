@@ -1,7 +1,7 @@
 # README
 
 This repository was created for a workshop to demonstrate shell scripting. 
-The repository is public and may be found at: 
+The repository is public and may be found at: https://github.com/Cloud-Computing-Big-Data/Git-shell-workshop/tree/master
 
 ### Instructions for following the workshop. 
 Start with the "master" branch of the repository, and look at the script.sh file. <br> 
